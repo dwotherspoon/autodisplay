@@ -1,12 +1,14 @@
 #include <string.h>
 
 #include <debug.h>
-#include <gauge/gauge.h>
-#include <gauge/gauge_test.h>
+#include <gauges/gauge.h>
+#include <gauges/gauge_test.h>
+#include <gauges/gauge_dial.h>
 
 /* Note, it is assumed number of gauge types is small, 8-bit ID is used. */
-struct gauge_t gauge_table[] = {
+struct gauge_type_t gauge_table[] = {
     GAUGE_TABLE_DEF("Test Gauge", gauge_test),
+    GAUGE_TABLE_DEF("Dial Gauge", gauge_dial),
     GAUGE_TABLE_END()
 };
 

@@ -1,7 +1,9 @@
 #ifndef _INPUT_H
 #define _INPUT_H
 
-struct input_config_t {
+#include <stdint.h>
+
+struct input_t {
     uint8_t input_type_id;
 
     void *test;
@@ -20,6 +22,6 @@ struct input_type_t {
     void *cur_value;
 };
 
-extern input_type_t input_type_table[];
+extern struct input_type_t input_type_table[];
 
 #endif

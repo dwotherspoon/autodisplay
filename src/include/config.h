@@ -15,3 +15,6 @@
 #define PIN_IN_FUEL_LEVEL    NULL
 /* For bluetooth module */
 #define PIN_HC05 NULL
+
+/* Limits */
+#define LIMIT_MAX_GAUGES 100

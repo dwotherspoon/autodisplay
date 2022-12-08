@@ -1,6 +1,7 @@
 #include <image/image.h>
+#include <debug.h>
 
-uint8_t image_format_pixel_size_lut
+uint8_t image_format_pixel_size_lut;
 
 #define GET_PIXEL(image_t)
 
@@ -14,7 +15,6 @@ void image_copy(struct image_t *src, struct image_t *dst,
     if (src_w == src->width && src_w == dst_w && src_w == dst->width) {
 
     } else {
-        y_dec =
-        for (y = src_y)
+
     }
 }
