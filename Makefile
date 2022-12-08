@@ -13,8 +13,14 @@ LDFLAGS = -Os -Wl,--gc-sections,--relax $(SPECS) $(CPU_OPTIONS) -T$(MCU_LD)
 
 EXECNAME = rom.hex
 
-all: src/main.o
+all: main test
 	@echo "Build complete."
+
+main: src/main.o
+
+test: src/test.o
+
+gauges:
 
 .PHONY: clean
 clean:
