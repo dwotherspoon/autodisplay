@@ -2,25 +2,34 @@
 #define _INPUT_H
 
 #include <stdint.h>
+#include <stdbool.h>
+#include <config.h>
+
+union input_data_t {
+    uint8_t dummy;
+};
 
 struct input_t {
-    uint8_t input_type_id;
-
+    char type_name[LIMIT_TYPE_NAME_LEN];
+    uint8_t type_id;
+    union input_data_t data;
     void *test;
     void *max_value;
     void *min_value;
     void *cur_value;
+    /* By default, all inputs are calculated in metric units. */
+    bool imperial;
 };
 
 struct input_type_t {
-    char *name;
-    void *test;
-    /* The maximum and minimum possible values for this input,
-        Used for rendering dial faces and sanity checking. */
-    void *max_value;
-    void *min_value;
-    void *cur_value;
+    char name[LIMIT_TYPE_NAME_LEN];
+    void (*init)(struct input_t *input);
+    void (*read)(struct input_t *input);
 };
+
+#define INPUT_TABLE_DEF(NAME, PREFIX) {NAME, PREFIX##_init, PREFIX##_read}
+#define INPUT_TABLE_END()             {"", NULL, NULL}
+#define INPUT_NOT_FOUND 0xff
 
 extern struct input_type_t input_type_table[];
 

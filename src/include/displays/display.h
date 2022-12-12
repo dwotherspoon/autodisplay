@@ -18,7 +18,6 @@ union display_data_t {
 #ifdef TEST_BUILD
     struct display_sdl_data_t sdl;
 #else
-
 #endif
 };
 
@@ -54,11 +53,11 @@ struct display_type_t {
 
 */
 
-#define DISPLAY_NOT_FOUND 0xFF
+#define DISPLAY_NOT_FOUND 0xff
 #define DISPLAY_NO_BACKGROUND 0x0
 
 #define DISPLAY_DEF_BUFFERS(NAME, WIDTH, HEIGHT, BPP) uint8_t NAME##_buffer_data[WIDTH * HEIGHT * BPP];\
-                                                      uint8_t NAME##_bg_buffer_data[WIDTH * HEIGHT *BPP]\
+                                                      uint8_t NAME##_bg_buffer_data[WIDTH * HEIGHT * BPP]\
 
 #define DISPLAY_DEF_STRUCT(NAME, TYPE_NAME, WIDTH, HEIGHT, IMAGE_FORMAT) {TYPE_NAME, DISPLAY_NOT_FOUND, {0}, WIDTH, HEIGHT, IMAGE_FORMAT, 0, 0,\
                                                         {WIDTH, HEIGHT, IMAGE_FORMAT, NAME##_buffer_data},\
@@ -70,4 +69,3 @@ struct display_type_t {
 void display_init(struct display_t *display);
 
 #endif
-

@@ -10,7 +10,7 @@
 #include <displays/display_gc9a01.h>
 #endif
 
-struct display_type_t display_table[] = {
+struct display_type_t display_type_table[] = {
 #ifdef TEST_BUILD
     DISPLAY_TABLE_DEF("SDL", display_sdl),
 #else
@@ -27,8 +27,8 @@ uint8_t display_find_type_id(char *name) {
     uint8_t id;
     ASSERT(name != NULL, "Null input display name specified.");
 
-    for (id = 0; display_table[id].name[0] != 0; id++) {
-        if (strcmp(name, display_table[id].name) == 0) {
+    for (id = 0; display_type_table[id].name[0] != 0; id++) {
+        if (strcmp(name, display_type_table[id].name) == 0) {
             return id;
         }
     }
@@ -39,7 +39,7 @@ uint8_t display_find_type_id(char *name) {
 void display_init(struct display_t *display) {
     /* When a display is initialised, we need to match the type string to an id in the display table. */
     display->type_id = display_find_type_id(display->type_name);
-    display_table[display->type_id].init(display);
+    display_type_table[display->type_id].init(display);
 }
 
 void display_generate_background(struct display_t *display) {

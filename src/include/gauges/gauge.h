@@ -43,18 +43,16 @@ struct gauge_t {
 struct gauge_type_t {
     const char name[LIMIT_TYPE_NAME_LEN];
     /* Pointer to function for rendering guage face */
-    const void (*render_face)(struct gauge_t *gauge, struct display_t *display);
+    void (*render_face)(struct gauge_t *gauge, struct display_t *display);
     /* Pointer to function for rendering value */
-    const void (*render_value)(struct gauge_t *gauge, struct display_t *display);
+    void (*render_value)(struct gauge_t *gauge, struct display_t *display);
 };
 
 #define GAUGE_TABLE_DEF(NAME, PREFIX) {NAME, PREFIX##_render_face, PREFIX##_render_value}
 #define GAUGE_TABLE_END() {"", NULL, NULL}
-#define GAUGE_NOT_FOUND 0xFF
+#define GAUGE_NOT_FOUND 0xff
 
 /* */
 extern struct gauge_type_t gauge_type_table[];
-
-uint8_t gauge_find_type_id(char *name);
 
 #endif
