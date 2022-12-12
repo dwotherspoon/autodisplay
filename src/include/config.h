@@ -17,4 +17,5 @@
 #define PIN_HC05 NULL
 
 /* Limits */
-#define LIMIT_MAX_GAUGES 100
+#define LIMIT_MAX_GAUGES 50
+#define LIMIT_TYPE_NAME_LEN 10

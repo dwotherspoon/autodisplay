@@ -19,7 +19,7 @@ TEST_CFLAGS = -Wall -Wextra -Wpedantic -O1 -Isrc/include
 
 DISPLAY_OBJS = src/displays/display.o
 GAUGE_OBJS = src/gauges/gauge.o src/gauges/gauge_test.o src/gauges/gauge_dial.o
-INPUT_OBJS = src/inputs/input.o
+INPUT_OBJS = src/inputs/input.o src/inputs/input_bme280.o
 IMAGE_OBJS = src/image/image.o
 
 all: main test

@@ -10,15 +10,14 @@ DISPLAY_DEF_BUFFERS(win2, 240, 240, 24);
 DISPLAY_DEF_BUFFERS(win3, 240, 240, 24);
 
 struct display_t displays[] = {
-    DISPLAY_DEF_STRUCT("SDL", 240, 240, 3),
-    DISPLAY_DEF_STRUCT("SDL", 240, 240, 3),
-    DISPLAY_DEF_STRUCT("SDL", 240, 240, 3)
+    DISPLAY_DEF_STRUCT(win1, "SDL", 240, 240, 3),
+    DISPLAY_DEF_STRUCT(win2, "SDL", 240, 240, 3),
+    DISPLAY_DEF_STRUCT(win3, "SDL", 240, 240, 3)
 };
 
 int main(int argc, char *argv[]) {
     bool quit = false;
     SDL_Event event;
-    SDL_Window *win1;
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         printf("Error: Failed to init SDL: %s\n", SDL_GetError());
@@ -40,9 +39,6 @@ int main(int argc, char *argv[]) {
         }
         SDL_Delay(32);
     }
-
-    SDL_DestroyWindow(win1);
-    
 
     return 0;
 }

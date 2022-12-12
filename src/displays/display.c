@@ -19,15 +19,15 @@ struct display_type_t display_table[] = {
     DISPLAY_TABLE_END()
 };
 
-/** Find id of display in display table from name.
+/** Find id of display type in display table from name.
     @param name String, name of display to find.
     @return The id of the display in the table, or DISPLAY_NOT_FOUND (0xFF) on failure.
 */
-uint8_t display_find_id(char *name) {
+uint8_t display_find_type_id(char *name) {
     uint8_t id;
     ASSERT(name != NULL, "Null input display name specified.");
 
-    for (id = 0; display_table[id].name != NULL; id++) {
+    for (id = 0; display_table[id].name[0] != 0; id++) {
         if (strcmp(name, display_table[id].name) == 0) {
             return id;
         }
@@ -38,8 +38,8 @@ uint8_t display_find_id(char *name) {
 
 void display_init(struct display_t *display) {
     /* When a display is initialised, we need to match the type string to an id in the display table. */
-    display->display_type_id = display_find_id(display->display_type_name);
-    display_table[display->display_type_id].init(display);
+    display->type_id = display_find_type_id(display->type_name);
+    display_table[display->type_id].init(display);
 }
 
 void display_generate_background(struct display_t *display) {

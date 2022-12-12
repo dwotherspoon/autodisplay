@@ -20,7 +20,7 @@ uint8_t gauge_find_id(char *name) {
     uint8_t id;
     ASSERT(name != NULL, "Null input gauge name specified.");
 
-    for (id = 0; gauge_table[id].name != NULL; id++) {
+    for (id = 0; gauge_table[id].name[0] != 0; id++) {
         if (strcmp(name, gauge_table[id].name) == 0) {
             return id;
         }
