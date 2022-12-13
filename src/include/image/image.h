@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-enum image_format_t {RGB_24BPP, GREYSCALE_8BPP};
+enum image_format_t {RGB_888 = 0, RGB_565, MONO_8, MONO_1};
 
 struct image_t {
     uint16_t width;
