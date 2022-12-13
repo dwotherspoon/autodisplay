@@ -10,9 +10,9 @@ DISPLAY_DEF_BUFFERS(win2, 240, 240, 24);
 DISPLAY_DEF_BUFFERS(win3, 240, 240, 24);
 
 struct display_t displays[] = {
-    DISPLAY_DEF_STRUCT(win1, "SDL", 240, 240, RGB_888),
-    DISPLAY_DEF_STRUCT(win2, "SDL", 240, 240, RGB_888),
-    DISPLAY_DEF_STRUCT(win3, "SDL", 240, 240, RGB_888)
+    DISPLAY_DEF_STRUCT(win1, "SDL", 240, 240, "RGB888"),
+    DISPLAY_DEF_STRUCT(win2, "SDL", 240, 240, "RGB888"),
+    DISPLAY_DEF_STRUCT(win3, "SDL", 240, 240, "RGB888")
 };
 
 int main(int argc, char *argv[]) {

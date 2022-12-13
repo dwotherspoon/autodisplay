@@ -2,13 +2,14 @@
 #define _IMAGE_H
 
 #include <stdint.h>
-
-enum image_format_t {RGB_888 = 0, RGB_565, MONO_8, MONO_1};
+#include <config.h>
+#include <image/image_formats.h>
 
 struct image_t {
     uint16_t width;
     uint16_t height;
-    enum image_format_t format;
+    char format_name[LIMIT_TYPE_NAME_LEN];
+    struct image_format_t *format;
     uint8_t *data;
 };
 

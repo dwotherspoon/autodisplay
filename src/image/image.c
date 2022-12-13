@@ -1,36 +1,18 @@
 #include <image/image.h>
 #include <debug.h>
-
-uint8_t image_format_bpp_lut[] = {24, 16, 8, 1};
+#include <config.h>
 
 /* N.B. what about 1BPP greyscale? */
 
 #define PIXEL_PTR(IMAGE, X, Y) ((IMAGE)->data + ((((((IMAGE)->width * (Y)) + (X)) * image_format_bpp_lut[(IMAGE)->format])) >> 3))
 
-uint32_t image_convertpixel(uint32_t value, enum image_format_t src_fmt, enum image_format_t dst_fmt) {
+uint32_t image_convertpixel(uint32_t value, struct image_format_t *src_fmt, struct image_format_t *dst_fmt) {
     /* First convet the pixel into RGB 888 then to destination format? */
     return -1;
 }
 
 void image_setpixel(struct image_t *image, uint16_t x, uint16_t y, uint32_t value) {
-    uint8_t *ptr = PIXEL_PTR(image, x, y);
-    switch (image->format) {
-        case MONO_1:
-            *ptr = value;
-            break;
-        case MONO_8:
-            *ptr = value;
-            break;
-        case RGB_565:
-            *(uint16_t*)ptr = value;
-            break;
-        case RGB_888:
-            *(uint16_t*)ptr = value;
-            ptr[2] = value >> 16;
-            break;
-        default:
-            ERROR("Unsupported bits per pixel: %i\n", image_format_bpp_lut[image->format]);
-    }
+
 }
 
 void image_drawline(struct image_t *image,

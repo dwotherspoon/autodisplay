@@ -27,7 +27,8 @@ struct display_t {
     union display_data_t data;
     uint16_t height;
     uint16_t width;
-    enum image_format_t image_format;
+    char image_format_name[LIMIT_TYPE_NAME_LEN];
+    struct image_format_t *image_format;
     uint32_t render_interval;
     uint32_t time_since_last_render;
     struct image_t buffer;
@@ -56,10 +57,12 @@ struct display_type_t {
 #define DISPLAY_NOT_FOUND 0xff
 #define DISPLAY_NO_BACKGROUND 0x0
 
-#define DISPLAY_DEF_BUFFERS(NAME, WIDTH, HEIGHT, BPP) uint8_t NAME##_buffer_data[WIDTH * HEIGHT * BPP];\
-                                                      uint8_t NAME##_bg_buffer_data[WIDTH * HEIGHT * BPP]\
+/* Size of buffer required for given size and bpp, rounded up */
+#define DISPLAY_BUFFER_SIZE(WIDTH, HEIGHT, BPP) (((WIDTH * HEIGHT * BPP) >> 3) + (((WIDTH * HEIGHT * BPP) & 0x7) ? 1 : 0))
+#define DISPLAY_DEF_BUFFERS(NAME, WIDTH, HEIGHT, BPP) uint8_t NAME##_buffer_data[DISPLAY_BUFFER_SIZE(WIDTH, HEIGHT, BPP)];\
+                                                      uint8_t NAME##_bg_buffer_data[DISPLAY_BUFFER_SIZE(WIDTH, HEIGHT, BPP)]\
 
-#define DISPLAY_DEF_STRUCT(NAME, TYPE_NAME, WIDTH, HEIGHT, IMAGE_FORMAT) {TYPE_NAME, DISPLAY_NOT_FOUND, {0}, WIDTH, HEIGHT, IMAGE_FORMAT, 0, 0,\
+#define DISPLAY_DEF_STRUCT(NAME, TYPE_NAME, WIDTH, HEIGHT, IMAGE_FORMAT) {TYPE_NAME, DISPLAY_NOT_FOUND, {0}, WIDTH, HEIGHT, IMAGE_FORMAT, 0, 0, 0,\
                                                         {WIDTH, HEIGHT, IMAGE_FORMAT, NAME##_buffer_data},\
                                                         {WIDTH, HEIGHT, IMAGE_FORMAT, NAME##_bg_buffer_data}, 0}
 
