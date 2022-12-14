@@ -60,7 +60,7 @@ struct display_type_t {
 /* Size of buffer required for given size and bpp, rounded up */
 #define DISPLAY_BUFFER_SIZE(WIDTH, HEIGHT, BPP) (((WIDTH * HEIGHT * BPP) >> 3) + (((WIDTH * HEIGHT * BPP) & 0x7) ? 1 : 0))
 #define DISPLAY_DEF_BUFFERS(NAME, WIDTH, HEIGHT, BPP) uint8_t NAME##_buffer_data[DISPLAY_BUFFER_SIZE(WIDTH, HEIGHT, BPP)];\
-                                                      uint8_t NAME##_bg_buffer_data[DISPLAY_BUFFER_SIZE(WIDTH, HEIGHT, BPP)]\
+                                                      uint8_t NAME##_bg_buffer_data[DISPLAY_BUFFER_SIZE(WIDTH, HEIGHT, BPP)]
 
 #define DISPLAY_DEF_STRUCT(NAME, TYPE_NAME, WIDTH, HEIGHT, IMAGE_FORMAT) {TYPE_NAME, DISPLAY_NOT_FOUND, {0}, WIDTH, HEIGHT, IMAGE_FORMAT, 0, 0, 0,\
                                                         {WIDTH, HEIGHT, IMAGE_FORMAT, NAME##_buffer_data},\
