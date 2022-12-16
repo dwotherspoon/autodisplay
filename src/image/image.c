@@ -4,7 +4,7 @@
 
 void image_init(struct image_t *image) {
     ASSERT(image != NULL, "Can not init NULL image");
-    image->format = (image->format_name);
+    image->format = image_format_find(image->format_name);
     ASSERT(image->format != NULL, "Can not find image format: %s", image->format_name);
 }
 
@@ -17,7 +17,7 @@ uint32_t image_convert_pixel(uint32_t value, struct image_format_t *src_fmt, str
 uint32_t image_get_pixel(struct image_t *image, uint16_t x, uint16_t y, uint32_t value) {
     ASSERT(image != NULL, "Image can not be NULL\n");
     ASSERT(image->format != NULL, "Image format can not be NULL\n");
-    image->format->get_pixel(image, x, y);
+    return image->format->get_pixel(image, x, y);
 }
 
 void image_set_pixel(struct image_t *image, uint16_t x, uint16_t y, uint32_t value) {
@@ -26,10 +26,10 @@ void image_set_pixel(struct image_t *image, uint16_t x, uint16_t y, uint32_t val
     image->format->set_pixel(image, x, y, value);
 }
 
-void image_drawline(struct image_t *image,
-                    uint16_t start_x, uint16_t start_y,
-                    uint16_t end_x, uint16_t end_y,
-                    uint32_t colour, uint8_t thickness) {
+void image_draw_line(struct image_t *image,
+                     uint16_t start_x, uint16_t start_y,
+                     uint16_t end_x, uint16_t end_y,
+                     uint32_t colour, uint8_t thickness) {
     if (start_x == end_x) {
         /* Straight line in y axis */
         if (start_y < end_y) {

@@ -15,8 +15,15 @@ struct image_t {
 
 void image_init(struct image_t *image);
 
+void image_draw_line(struct image_t *image,
+                     uint16_t start_x, uint16_t start_y,
+                     uint16_t end_x, uint16_t end_y,
+                     uint32_t colour, uint8_t thickness);
+
 void image_copy(struct image_t *src, struct image_t *dst,
                 uint16_t src_x, uint16_t src_y, int16_t src_w, int16_t src_h,
                 uint16_t dst_x, uint16_t dst_y, int16_t dst_w, int16_t dst_h);
+
+#define IMAGE_DEF_STRUCT(WIDTH, HEIGHT, FORMAT_NAME, DATA) {WIDTH, HEIGHT, FORMAT_NAME, NULL, DATA}
 
 #endif

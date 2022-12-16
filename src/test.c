@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
     for (uint8_t id = 0; id < sizeof(displays)/sizeof(struct display_t); id++) {
         printf("Start display %u\n", id);
         display_init(&displays[id]);
+        display_render(&displays[id]);
     }
 
     while (!quit) {

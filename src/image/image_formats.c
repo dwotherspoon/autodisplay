@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <string.h>
+#include <stdio.h>
 
 #include <image/image_formats.h>
 #include <debug.h>
@@ -28,11 +29,13 @@ uint32_t image_format_mono1_convert_from_rgb888(uint32_t value) {
 }
 
 uint32_t image_format_mono1_get_pixel(struct image_t *image, uint16_t x, uint16_t y) {
+    ASSERT(image->data != NULL, "Image data can not be NULL");
     uint32_t offset = IMAGE_PIXEL_OFFSET(image, x, y);
     return (image->data[offset >> 3] >> (7 - (offset & 0x7))) & 0x1;
 }
 
 void image_format_mono1_set_pixel(struct image_t *image, uint16_t x, uint16_t y, uint32_t value) {
+    ASSERT(image->data != NULL, "Image data can not be NULL");
     uint32_t offset = IMAGE_PIXEL_OFFSET(image, x, y);
     if (value) {
         /* Set bit */
@@ -53,11 +56,13 @@ uint32_t image_format_mono8_convert_from_rgb888(uint32_t value) {
 }
 
 uint32_t image_format_mono8_get_pixel(struct image_t *image, uint16_t x, uint16_t y) {
+    ASSERT(image->data != NULL, "Image data can not be NULL");
     uint32_t offset = IMAGE_PIXEL_OFFSET(image, x, y) * 3;
     return RGB_888(image->data[offset], image->data[offset + 1], image->data[offset + 2]);
 }
 
 void image_format_mono8_set_pixel(struct image_t *image, uint16_t x, uint16_t y, uint32_t value) {
+    ASSERT(image->data != NULL, "Image data can not be NULL");
     uint32_t offset = IMAGE_PIXEL_OFFSET(image, x, y) * 3;
     image->data[offset] = RGB_888_R(value);
     image->data[offset + 1] = RGB_888_G(value);
@@ -74,6 +79,7 @@ uint32_t image_format_rgb444_convert_from_rgb888(uint32_t value) {
 }
 
 uint32_t image_format_rgb444_get_pixel(struct image_t *image, uint16_t x, uint16_t y) {
+    ASSERT(image->data != NULL, "Image data can not be NULL");
     uint32_t offset = IMAGE_PIXEL_OFFSET(image, x, y) * 12;
     uint8_t byte1 = image->data[offset >> 3];
     uint8_t byte2 = image->data[(offset >> 3) + 1];
@@ -93,6 +99,7 @@ uint32_t image_format_rgb444_get_pixel(struct image_t *image, uint16_t x, uint16
 }
 
 void image_format_rgb444_set_pixel(struct image_t *image, uint16_t x, uint16_t y, uint32_t value) {
+    ASSERT(image->data != NULL, "Image data can not be NULL");
     uint32_t offset = IMAGE_PIXEL_OFFSET(image, x, y) * 12;
     /* Offset should always be 0x4 or 0x0 */
     ASSERT(!(offset & 0x3), "Unexpected offset 0x%x", offset);
@@ -121,6 +128,7 @@ uint32_t image_format_rgb565_convert_from_rgb888(uint32_t value) {
 }
 
 uint32_t image_format_rgb565_get_pixel(struct image_t *image, uint16_t x, uint16_t y) {
+    ASSERT(image->data != NULL, "Image data can not be NULL");
     uint32_t offset = IMAGE_PIXEL_OFFSET(image, x, y) << 1;
     uint8_t byte1 = image->data[offset];
     uint8_t byte2 = image->data[offset + 1];
@@ -131,6 +139,7 @@ uint32_t image_format_rgb565_get_pixel(struct image_t *image, uint16_t x, uint16
 }
 
 void image_format_rgb565_set_pixel(struct image_t *image, uint16_t x, uint16_t y, uint32_t value) {
+    ASSERT(image->data != NULL, "Image data can not be NULL");
     uint32_t offset = IMAGE_PIXEL_OFFSET(image, x, y) << 1;
     /*  |    First Byte    |     Second Byte    |
         8         4       0/8         4         0      
@@ -149,6 +158,7 @@ uint32_t image_format_rgb666_convert_from_rgb888(uint32_t value) {
 }
 
 uint32_t image_format_rgb666_get_pixel(struct image_t *image, uint16_t x, uint16_t y) {
+    ASSERT(image->data != NULL, "Image data can not be NULL");
     uint32_t offset = IMAGE_PIXEL_OFFSET(image, x, y) * 18;
     uint8_t byte1 = image->data[offset >> 3];
     uint8_t byte2 = image->data[(offset >> 3) + 1];
@@ -173,6 +183,7 @@ uint32_t image_format_rgb666_get_pixel(struct image_t *image, uint16_t x, uint16
 }
 
 void image_format_rgb666_set_pixel(struct image_t *image, uint16_t x, uint16_t y, uint32_t value) {
+    ASSERT(image->data != NULL, "Image data can not be NULL");
     uint32_t offset = IMAGE_PIXEL_OFFSET(image, x, y) * 18;
     /* Offset should always be 0x2 or 0x0 */
     ASSERT(!(offset & 0x5), "Unexpected offset 0x%x", offset);
@@ -205,11 +216,13 @@ uint32_t image_format_rgb888_convert_from_rgb888(uint32_t value) {
 }
 
 uint32_t image_format_rgb888_get_pixel(struct image_t *image, uint16_t x, uint16_t y) {
+    ASSERT(image->data != NULL, "Image data can not be NULL");
     uint32_t offset = IMAGE_PIXEL_OFFSET(image, x, y) * 3;
     return RGB_888(image->data[offset], image->data[offset + 1], image->data[offset + 2]);
 }
 
 void image_format_rgb888_set_pixel(struct image_t *image, uint16_t x, uint16_t y, uint32_t value) {
+    ASSERT(image->data != NULL, "Image data can not be NULL");
     uint32_t offset = IMAGE_PIXEL_OFFSET(image, x, y) * 3;
     image->data[offset] = RGB_888_R(value);
     image->data[offset + 1] = RGB_888_G(value);
@@ -229,7 +242,6 @@ struct image_format_t image_format_table[] = {
 struct image_format_t *image_format_find(char *name) {
     uint8_t id;
     ASSERT(name != NULL, "Null input name specified.");
-
     for (id = 0; image_format_table[id].name[0] != 0; id++) {
         if (strcmp(name, image_format_table[id].name) == 0) {
             return &image_format_table[id];

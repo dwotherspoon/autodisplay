@@ -21,25 +21,26 @@ struct display_type_t display_type_table[] = {
 
 /** Find id of display type in display table from name.
     @param name String, name of display to find.
-    @return The id of the display in the table, or DISPLAY_NOT_FOUND (0xFF) on failure.
+    @return The pointer to display type , or NULL on failure.
 */
-uint8_t display_find_type_id(char *name) {
+struct display_type_t *display_find_type(char *name) {
     uint8_t id;
     ASSERT(name != NULL, "Null input display name specified.");
 
     for (id = 0; display_type_table[id].name[0] != 0; id++) {
         if (strcmp(name, display_type_table[id].name) == 0) {
-            return id;
+            return &display_type_table[id];
         }
     }
 
-    return DISPLAY_NOT_FOUND;
+    return NULL;
 }
 
 void display_init(struct display_t *display) {
+    ASSERT(display != NULL, "Can not initialise NULL display.");
     /* When a display is initialised, we need to match the type string to an id in the display table. */
-    display->type_id = display_find_type_id(display->type_name);
-    display_type_table[display->type_id].init(display);
+    display->type = display_find_type(display->type_name);
+    display->type->init(display);
     /* We should also initalise the background and buffer */
     image_init(&display->background);
     image_init(&display->buffer);
@@ -52,12 +53,16 @@ void display_generate_background(struct display_t *display) {
 
 void display_render(struct display_t *display) {
     ASSERT(display != NULL);
-    struct image_t buffer;
 
     /* First we copy the pre-generated buffer in */
-
+/*
     image_copy(&display->background, &buffer, 
                 0, 0, display->width, display->height,
                 0, 0, display->width, display->height);
+    */
+
+   image_draw_line(&display->buffer, 120, 0, 120, 240, RGB_888_RED, 1);
+
+   display->type->write(display);
 
 }

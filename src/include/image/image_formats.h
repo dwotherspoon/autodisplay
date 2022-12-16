@@ -48,14 +48,15 @@ struct image_format_t {
 #define RGB_888_G(V)     ((V >> 8) & 0xff)
 #define RGB_888_B(V)     (V & 0xff)
 #define RGB_888_BLACK    RGB_888(0, 0, 0)
-#define RGB_888_WHITE    RGB_888(0xFF, 0xFF, 0xFF)
+#define RGB_888_WHITE    RGB_888(0xff, 0xff, 0xff)
+#define RGB_888_RED      RGB_888(0xff, 0, 0)
+#define RGB_888_GREEN    RGB_888(0, 0xff, 0)
+#define RGB_888_BLUE     RGB_888(0, 0, 0xff)
 
 #define IMAGE_PIXEL_OFFSET(IMAGE, X, Y) ((Y) * (IMAGE)->width + (X))
 
 #define IMAGE_FORMAT_TABLE_DEF(NAME, BPP, PREFIX) {NAME, BPP, PREFIX##_convert_to_rgb888, PREFIX##_convert_from_rgb888, PREFIX##_get_pixel, PREFIX##_set_pixel}
 #define IMAGE_FORMAT_TABLE_END()                  {"", 0, NULL, NULL, NULL, NULL}
-
-extern struct image_format_t image_format_table[];
 
 struct image_format_t *image_format_find(char *name);
 
