@@ -2,17 +2,28 @@
 #include <debug.h>
 #include <config.h>
 
-/* N.B. what about 1BPP greyscale? */
-
-#define PIXEL_PTR(IMAGE, X, Y) ((IMAGE)->data + ((((((IMAGE)->width * (Y)) + (X)) * image_format_bpp_lut[(IMAGE)->format])) >> 3))
-
-uint32_t image_convertpixel(uint32_t value, struct image_format_t *src_fmt, struct image_format_t *dst_fmt) {
-    /* First convet the pixel into RGB 888 then to destination format? */
-    return -1;
+void image_init(struct image_t *image) {
+    ASSERT(image != NULL, "Can not init NULL image");
+    image->format = (image->format_name);
+    ASSERT(image->format != NULL, "Can not find image format: %s", image->format_name);
 }
 
-void image_setpixel(struct image_t *image, uint16_t x, uint16_t y, uint32_t value) {
+uint32_t image_convert_pixel(uint32_t value, struct image_format_t *src_fmt, struct image_format_t *dst_fmt) {
+    ASSERT(src_fmt != NULL, "Source format can not be NULL");
+    ASSERT(dst_fmt != NULL, "Destination format can not be NULL");
+    return dst_fmt->convert_from_rgb888(src_fmt->convert_to_rgb888(value));
+}
 
+uint32_t image_get_pixel(struct image_t *image, uint16_t x, uint16_t y, uint32_t value) {
+    ASSERT(image != NULL, "Image can not be NULL\n");
+    ASSERT(image->format != NULL, "Image format can not be NULL\n");
+    image->format->get_pixel(image, x, y);
+}
+
+void image_set_pixel(struct image_t *image, uint16_t x, uint16_t y, uint32_t value) {
+    ASSERT(image != NULL, "Image can not be NULL\n");
+    ASSERT(image->format != NULL, "Image format can not be NULL\n");
+    image->format->set_pixel(image, x, y, value);
 }
 
 void image_drawline(struct image_t *image,
@@ -24,19 +35,19 @@ void image_drawline(struct image_t *image,
         if (start_y < end_y) {
             for (uint16_t y = start_y; y < end_y; y++) {
                 /* TODO: Iterate over thickness */
-                image_setpixel(image, start_x, y, colour);
+                image_set_pixel(image, start_x, y, colour);
             }
              /* Draw the last pixel (avoid possible loop counter wrap-around) */
              /* TODO: Iterate over thickness */
-             image_setpixel(image, start_x, end_y, colour);
+             image_set_pixel(image, start_x, end_y, colour);
         } else {
             for (uint16_t y = end_y; y < start_y; y++) {
                 /* TODO: Iterate over thickness */
-                image_setpixel(image, start_x, y, colour);
+                image_set_pixel(image, start_x, y, colour);
             }
             /* Draw the last pixel (avoid possible loop counter wrap-around) */
             /* TODO: Iterate over thickness */
-            image_setpixel(image, start_x, start_y, colour);
+            image_set_pixel(image, start_x, start_y, colour);
         }
     }
     else if (start_y == end_y) {
@@ -44,19 +55,19 @@ void image_drawline(struct image_t *image,
         if (start_x < end_x) {
             for (uint16_t x = start_x; x < end_x; x++) {
                 /* TODO: Iterate over thickness */
-                image_setpixel(image, x, start_y, colour);
+                image_set_pixel(image, x, start_y, colour);
             }
             /* Draw the last pixel (avoid possible loop counter wrap-around) */
             /* TODO: Iterate over thickness */
-            image_setpixel(image, end_x, start_y, colour);
+            image_set_pixel(image, end_x, start_y, colour);
         } else {
             for (uint16_t x = end_x; x < start_x; x++) {
                 /* TODO: Iterate over thickness */
-                image_setpixel(image, x, start_y, colour);
+                image_set_pixel(image, x, start_y, colour);
             }
             /* Draw the last pixel (avoid possible loop counter wrap-around) */
             /* TODO: Iterate over thickness */
-            image_setpixel(image, start_x, start_y, colour);
+            image_set_pixel(image, start_x, start_y, colour);
         }
     } else {
 

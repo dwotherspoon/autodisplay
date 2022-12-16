@@ -13,6 +13,8 @@ struct image_t {
     uint8_t *data;
 };
 
+void image_init(struct image_t *image);
+
 void image_copy(struct image_t *src, struct image_t *dst,
                 uint16_t src_x, uint16_t src_y, int16_t src_w, int16_t src_h,
                 uint16_t dst_x, uint16_t dst_y, int16_t dst_w, int16_t dst_h);

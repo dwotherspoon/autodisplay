@@ -40,6 +40,9 @@ void display_init(struct display_t *display) {
     /* When a display is initialised, we need to match the type string to an id in the display table. */
     display->type_id = display_find_type_id(display->type_name);
     display_type_table[display->type_id].init(display);
+    /* We should also initalise the background and buffer */
+    image_init(&display->background);
+    image_init(&display->buffer);
 }
 
 void display_generate_background(struct display_t *display) {

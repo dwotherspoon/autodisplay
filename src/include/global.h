@@ -3,6 +3,8 @@
 
 #include <state.h>
 
+#define UNUSED(X) (void)(X)
+
 /* Singleton, current system state */
 struct state_t state = {0};
 
