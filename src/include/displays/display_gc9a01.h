@@ -3,8 +3,8 @@
 
 #include <displays/display.h>
 
-void display_gc9a01_init(struct display_t *display);
+void display_gc9a01_init(struct display *display);
 
-void display_gc9a01_write(struct display_t *display);
+void display_gc9a01_write(struct display_ *display, struct image *buffer);
 
 #endif

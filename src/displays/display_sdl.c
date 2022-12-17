@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
-void display_sdl_init(struct display_t *display) {
-    struct display_sdl_data_t *data = &display->data.sdl;
+void display_sdl_init(struct display *display) {
+    struct display_sdl_data *data = &display->data.sdl;
 
     data->window = SDL_CreateWindow("AutoDisplay Test Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                         display->width, display->height, 0);
@@ -18,10 +18,10 @@ void display_sdl_init(struct display_t *display) {
     data->renderer = SDL_CreateRenderer(data->window, -1, 0);
 }
 
-void display_sdl_write(struct display_t *display) {
+void display_sdl_write(struct display *display, struct image *buffer) {
     SDL_Texture *tex;
-    struct display_sdl_data_t *data = &display->data.sdl;
-    memcpy(data->surface->pixels, display->buffer.data, display->width * display->height * 3);
+    struct display_sdl_data *data = &display->data.sdl;
+    memcpy(data->surface->pixels, buffer->data, display->width * display->height * 3);
     tex = SDL_CreateTextureFromSurface(data->renderer, data->surface);
 
     SDL_RenderClear(data->renderer);  //clear renderer for drawing

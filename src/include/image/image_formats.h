@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <image/image.h>
 
-struct image_format_t {
+struct image_format {
     /* Type name to be referenced by other modules */
     char name[LIMIT_TYPE_NAME_LEN];
     /* Bits per pixel */
@@ -12,8 +12,8 @@ struct image_format_t {
     /* Function pointers */
     uint32_t (*convert_to_rgb888)(uint32_t value);
     uint32_t (*convert_from_rgb888)(uint32_t value);
-    uint32_t (*get_pixel)(struct image_t *image, uint16_t x, uint16_t y);
-    void (*set_pixel)(struct image_t *image, uint16_t x, uint16_t y, uint32_t value);
+    uint32_t (*get_pixel)(struct image *image, uint16_t x, uint16_t y);
+    void (*set_pixel)(struct image *image, uint16_t x, uint16_t y, uint32_t value);
 };
 
 #define MONO_1_BLACK     (0x0)
@@ -58,6 +58,6 @@ struct image_format_t {
 #define IMAGE_FORMAT_TABLE_DEF(NAME, BPP, PREFIX) {NAME, BPP, PREFIX##_convert_to_rgb888, PREFIX##_convert_from_rgb888, PREFIX##_get_pixel, PREFIX##_set_pixel}
 #define IMAGE_FORMAT_TABLE_END()                  {"", 0, NULL, NULL, NULL, NULL}
 
-struct image_format_t *image_format_find(char *name);
+struct image_format *image_format_find(char *name);
 
 #endif
