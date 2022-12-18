@@ -10,23 +10,23 @@
 
 /* Specific data types for gauges */
 
-struct gauge_test_data_t {
+struct gauge_test_data {
     uint8_t dummy;
 };
 
-struct gauge_dial_data_t {
+struct gauge_dial_data {
     uint8_t dummy;
 };
 
-union gauge_data_t {
-    struct gauge_dial_data_t dial;
-    struct gauge_test_data_t test;
+union gauge_data {
+    struct gauge_dial_data dial;
+    struct gauge_test_data test;
 };
 
-struct gauge_t {
+struct gauge {
     const char type_name[LIMIT_TYPE_NAME_LEN];
     /* The id of the gauge type */
-    uint8_t type_id;
+    struct gauge_type *type;
     uint8_t input_id;
     uint8_t font_id;
     bool imperial;
@@ -34,25 +34,24 @@ struct gauge_t {
     /* Sub-positioning on display, where used */
     uint8_t display_pos;
     /* Any extra data that the gauge needs to store */
-    union gauge_data_t data;
+    union gauge_data data;
     /* Order of drawing, 0 is first, 255 is last, allows layering gauges */
     /* Or do we get rid of this and just implicitly order them in config? */
     uint8_t draw_order;
 };
 
-struct gauge_type_t {
+struct gauge_type {
     const char name[LIMIT_TYPE_NAME_LEN];
     /* Pointer to function for rendering guage face */
-    void (*render_face)(struct gauge_t *gauge, struct display_t *display);
+    void (*render_face)(struct gauge *gauge, struct display *display);
     /* Pointer to function for rendering value */
-    void (*render_value)(struct gauge_t *gauge, struct display_t *display);
+    void (*render_value)(struct gauge *gauge, struct display *display);
 };
 
 #define GAUGE_TABLE_DEF(NAME, PREFIX) {NAME, PREFIX##_render_face, PREFIX##_render_value}
 #define GAUGE_TABLE_END() {"", NULL, NULL}
-#define GAUGE_NOT_FOUND 0xff
 
 /* */
-extern struct gauge_type_t gauge_type_table[];
+extern struct gauge_type gauge_type_table[];
 
 #endif

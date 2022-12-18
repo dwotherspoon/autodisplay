@@ -78,6 +78,10 @@ void display_render(struct display *display, uint8_t *data) {
 
     image_draw_line(&buffer, 120, 0, 120, 240, RGB_888_RED, 1);
 
+    image_draw_line(&buffer, 240, 120 , 0, 120, RGB_888_GREEN, 1);
+
+    image_draw_line(&buffer, 0, 0 , 120, 120, RGB_888_BLUE, 1);
+
     /* Send the completed display buffer to the display */
     display->type->write(display, &buffer);
 }

@@ -8,10 +8,10 @@
 #include <gauges/gauge.h>
 
 /* Struct for storing whole system state */
-struct state_t {
+struct state {
     uint32_t pin;
 
-    struct gauge_t gauges[LIMIT_MAX_GAUGES];
+    struct gauge gauges[LIMIT_MAX_GAUGES];
 };
 
 #endif

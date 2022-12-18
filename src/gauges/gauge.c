@@ -6,7 +6,7 @@
 #include <gauges/gauge_dial.h>
 
 /* Note, it is assumed number of gauge types is small, 8-bit ID is used. */
-struct gauge_type_t gauge_type_table[] = {
+struct gauge_type gauge_type_table[] = {
     GAUGE_TABLE_DEF("Test", gauge_test),
     GAUGE_TABLE_DEF("Dial", gauge_dial),
     GAUGE_TABLE_END()
@@ -14,19 +14,19 @@ struct gauge_type_t gauge_type_table[] = {
 
 /** Find type id of gauge in gauge table from name.
     @param name String, name of gauge to find.
-    @return The id of the gauge in the table, or GAUGE_NOT_FOUND (0xFF) on failure.
+    @return A pointer to the gauge type in the table, or NULL on failure.
 */
-uint8_t gauge_find_type_id(char *name) {
+struct gauge_type *gauge_find_type(char *name) {
     uint8_t id;
     ASSERT(name != NULL, "Null gauge name specified.");
 
     for (id = 0; gauge_type_table[id].name[0] != 0; id++) {
         if (strcmp(name, gauge_type_table[id].name) == 0) {
-            return id;
+            return &gauge_type_table[id];
         }
     }
 
-    return GAUGE_NOT_FOUND;
+    return NULL;
 }
 
 /** My function doing something...
