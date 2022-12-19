@@ -185,6 +185,61 @@ void image_draw_circle(struct image *image,
     image_set_pixel(image, centre_x - y, centre_y - x, colour);
 }
 
+void image_fill_circle(struct image *image,
+                        uint16_t centre_x, uint16_t centre_y,
+                        uint16_t radius, uint32_t colour) {
+    /* Bresenham's circle algorithim */
+    uint16_t x;
+    uint16_t y = radius;
+    int32_t d = 3 - 2 * radius;
+    for (x = 0; x < y; x++) {
+        image_draw_line_horizontal(image, centre_x - x, centre_y + y, centre_x + x, colour, 1);
+        image_draw_line_horizontal(image, centre_x - x, centre_y - y, centre_x + x, colour, 1);
+        image_draw_line_horizontal(image, centre_x - y, centre_y + x, centre_x + y, colour, 1);
+        image_draw_line_horizontal(image, centre_x - y, centre_y - x, centre_x + y, colour, 1);
+        if (d > 0) {
+            y--;
+            d = d + 4 * (x - y) + 10;
+        } else {
+            d = d + 4 * x + 6;
+        }
+    }
+    image_draw_line_horizontal(image, centre_x - x, centre_y + y, centre_x + x, colour, 1);
+    image_draw_line_horizontal(image, centre_x - x, centre_y - y, centre_x + x, colour, 1);
+    image_draw_line_horizontal(image, centre_x - y, centre_y + x, centre_x + y, colour, 1);
+    image_draw_line_horizontal(image, centre_x - y, centre_y - x, centre_x + y, colour, 1);
+}
+
+void image_fill_rectangle(struct image *image,
+                            uint16_t x0, uint16_t y0,
+                            uint16_t x1, uint16_t y1, uint32_t colour) {
+    uint16_t dx = abs(x0 - x1);
+    uint16_t dy = abs(y0 - y1);
+    uint16_t x;
+    uint16_t y;
+    /* Scan in the direction that results in the least calls to draw line */
+    if (dx < dy) {
+        /* Iterate over x */
+        if (x0 > x1) {
+            SWAP(x0, x1);
+            SWAP(y0, y1);
+        }
+        for (x = x0; x < x1; x++) {
+            image_draw_line_vertical(image, x, y0, y1, colour, 1);
+        }
+
+    } else {
+        /* Iterate over y */
+        if (y0 > y1) {
+            SWAP(x0, x1);
+            SWAP(y0, y1);
+        }
+        for (y = y0; y < y1; y++) {
+            image_draw_line_horizontal(image, x0, y, x1, colour, 1);
+        }
+    }
+}
+
 void image_copy(struct image *src, struct image *dst,
                 uint16_t src_x, uint16_t src_y, int16_t src_w, int16_t src_h,
                 uint16_t dst_x, uint16_t dst_y, int16_t dst_w, int16_t dst_h) {

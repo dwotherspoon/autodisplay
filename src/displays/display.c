@@ -82,9 +82,19 @@ void display_render(struct display *display, uint8_t *data) {
 
     image_draw_line(&buffer, 0, 0 , 120, 120, RGB_888_BLUE, 1);
 
-    image_draw_circle(&buffer, 120, 120, 30, RGB_888_GREEN, 1);
+    image_draw_circle(&buffer, 120, 120, 30, RGB_888_BLUE, 1);
 
     image_draw_circle(&buffer, 120, 120, 99, RGB_888_RED, 1);
+
+    image_draw_circle(&buffer, 120, 120, 120, RGB_888_GREEN, 1);
+
+    image_fill_circle(&buffer, 60, 60, 30, RGB_888(0, 128, 128));
+
+    image_fill_rectangle(&buffer, 200, 200, 235, 235, RGB_888(90, 90, 90));
+
+    image_fill_rectangle(&buffer, 100, 100, 150, 170, RGB_888_GREEN);
+
+    image_fill_rectangle(&buffer, 10, 15, 95, 70, RGB_888_RED);
 
     /* Send the completed display buffer to the display */
     display->type->write(display, &buffer);

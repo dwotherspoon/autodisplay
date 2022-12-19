@@ -24,6 +24,14 @@ void image_draw_circle(struct image *image,
                         uint16_t centre_x, uint16_t centre_y,
                         uint16_t radius, uint32_t colour, uint8_t thickness);
 
+void image_fill_circle(struct image *image,
+                        uint16_t centre_x, uint16_t centre_y,
+                        uint16_t radius, uint32_t colour);
+
+void image_fill_rectangle(struct image *image,
+                            uint16_t x0, uint16_t y0,
+                            uint16_t x1, uint16_t y1, uint32_t colour);
+
 void image_copy(struct image *src, struct image *dst,
                 uint16_t src_x, uint16_t src_y, int16_t src_w, int16_t src_h,
                 uint16_t dst_x, uint16_t dst_y, int16_t dst_w, int16_t dst_h);
