@@ -152,6 +152,39 @@ void image_draw_line_aliased(struct image *image,
     /* Use Xiaolin Wu's line algorithm */
 }
 
+void image_draw_circle(struct image *image,
+                        uint16_t centre_x, uint16_t centre_y,
+                        uint16_t radius, uint32_t colour, uint8_t thickness) {
+    /* Bresenham's circle algorithim */
+    uint16_t x;
+    uint16_t y = radius;
+    int32_t d = 3 - 2 * radius;
+    for (x = 0; x < y; x++) {
+        image_set_pixel(image, centre_x + x, centre_y + y, colour);
+        image_set_pixel(image, centre_x - x, centre_y + y, colour);
+        image_set_pixel(image, centre_x + x, centre_y - y, colour);
+        image_set_pixel(image, centre_x - x, centre_y - y, colour);
+        image_set_pixel(image, centre_x + y, centre_y + x, colour);
+        image_set_pixel(image, centre_x - y, centre_y + x, colour);
+        image_set_pixel(image, centre_x + y, centre_y - x, colour);
+        image_set_pixel(image, centre_x - y, centre_y - x, colour);
+        if (d > 0) {
+            y--;
+            d = d + 4 * (x - y) + 10;
+        } else {
+            d = d + 4 * x + 6;
+        }
+    }
+    image_set_pixel(image, centre_x + x, centre_y + y, colour);
+    image_set_pixel(image, centre_x - x, centre_y + y, colour);
+    image_set_pixel(image, centre_x + x, centre_y - y, colour);
+    image_set_pixel(image, centre_x - x, centre_y - y, colour);
+    image_set_pixel(image, centre_x + y, centre_y + x, colour);
+    image_set_pixel(image, centre_x - y, centre_y + x, colour);
+    image_set_pixel(image, centre_x + y, centre_y - x, colour);
+    image_set_pixel(image, centre_x - y, centre_y - x, colour);
+}
+
 void image_copy(struct image *src, struct image *dst,
                 uint16_t src_x, uint16_t src_y, int16_t src_w, int16_t src_h,
                 uint16_t dst_x, uint16_t dst_y, int16_t dst_w, int16_t dst_h) {

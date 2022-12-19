@@ -16,9 +16,13 @@ struct image {
 void image_init(struct image *image);
 
 void image_draw_line(struct image *image,
-                     uint16_t start_x, uint16_t start_y,
-                     uint16_t end_x, uint16_t end_y,
-                     uint32_t colour, uint8_t thickness);
+                        uint16_t start_x, uint16_t start_y,
+                        uint16_t end_x, uint16_t end_y,
+                        uint32_t colour, uint8_t thickness);
+
+void image_draw_circle(struct image *image,
+                        uint16_t centre_x, uint16_t centre_y,
+                        uint16_t radius, uint32_t colour, uint8_t thickness);
 
 void image_copy(struct image *src, struct image *dst,
                 uint16_t src_x, uint16_t src_y, int16_t src_w, int16_t src_h,
