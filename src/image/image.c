@@ -1,8 +1,10 @@
+#include <stdlib.h>
+
 #include <image/image.h>
+#include <image/image_formats.h>
 #include <debug.h>
 #include <config.h>
 #include <global.h>
-#include <stdlib.h>
 
 void image_init(struct image *image) {
     ASSERT(image != NULL, "Can not init NULL image");
@@ -34,9 +36,9 @@ void image_draw_line_vertical(struct image *image,
     /* Note: could be optimised further at the image format level. */
     /* Straight line in y axis */
     if (end_y < start_y) {
-        SWAP(end_y, start_y);
+        SWAP16(end_y, start_y);
     }
-    ASSERT(start_y <= end_y, "Swap failed\n");
+    ASSERT(start_y <= end_y, "Swap16 failed\n");
     for (uint16_t y = start_y; y < end_y; y++) {
         /* TODO: Iterate over thickness */
         image_set_pixel(image, x, y, colour);
@@ -52,7 +54,7 @@ void image_draw_line_horizontal(struct image *image,
     /* Note: could be optimised further at the image format level. */
     /* Straight line in x axis */
     if (end_x < start_x) {
-        SWAP(end_x, start_x);
+        SWAP16(end_x, start_x);
     }
     for (uint16_t x = start_x; x < end_x; x++) {
         /* TODO: Iterate over thickness */
@@ -68,8 +70,8 @@ void image_draw_line_low(struct image *image,
                             uint16_t end_x, uint16_t end_y,
                             uint32_t colour, uint8_t thickness) {
     if (start_x > end_x) {
-        SWAP(end_x, start_x);
-        SWAP(end_y, start_y);
+        SWAP16(end_x, start_x);
+        SWAP16(end_y, start_y);
     }
     int32_t dx  = end_x - start_x;
     int32_t dy = end_y - start_y;
@@ -98,8 +100,8 @@ void image_draw_line_high(struct image *image,
                         uint16_t end_x, uint16_t end_y,
                         uint32_t colour, uint8_t thickness) {
     if (start_y > end_y) {
-        SWAP(start_x, end_x);
-        SWAP(start_y, end_y);
+        SWAP16(start_x, end_x);
+        SWAP16(start_y, end_y);
     }
     int32_t dx = end_x - start_x;
     int32_t dy = end_y - start_y;
@@ -145,13 +147,6 @@ void image_draw_line(struct image *image,
     }
 }
 
-void image_draw_line_aliased(struct image *image,
-                                uint16_t start_x, uint16_t start_y,
-                                uint16_t end_x, uint16_t end_y,
-                                uint32_t colour, uint8_t thickness) {
-    /* Use Xiaolin Wu's line algorithm */
-}
-
 void image_draw_circle(struct image *image,
                         uint16_t centre_x, uint16_t centre_y,
                         uint16_t radius, uint32_t colour, uint8_t thickness) {
@@ -183,6 +178,15 @@ void image_draw_circle(struct image *image,
     image_set_pixel(image, centre_x - y, centre_y + x, colour);
     image_set_pixel(image, centre_x + y, centre_y - x, colour);
     image_set_pixel(image, centre_x - y, centre_y - x, colour);
+}
+
+void image_draw_rectangle(struct image *image,
+                            uint16_t x0, uint16_t y0,
+                            uint16_t x1, uint16_t y1, uint32_t colour, uint8_t thickness) {
+    image_draw_line_horizontal(image, x0, y0, x1, colour, thickness);
+    image_draw_line_horizontal(image, x0, y1, x1, colour, thickness);
+    image_draw_line_vertical(image, x0, y0, y1, colour, thickness);
+    image_draw_line_vertical(image, x1, y0, y1, colour, thickness);
 }
 
 void image_fill_circle(struct image *image,
@@ -221,8 +225,8 @@ void image_fill_rectangle(struct image *image,
     if (dx < dy) {
         /* Iterate over x */
         if (x0 > x1) {
-            SWAP(x0, x1);
-            SWAP(y0, y1);
+            SWAP16(x0, x1);
+            SWAP16(y0, y1);
         }
         for (x = x0; x < x1; x++) {
             image_draw_line_vertical(image, x, y0, y1, colour, 1);
@@ -231,8 +235,8 @@ void image_fill_rectangle(struct image *image,
     } else {
         /* Iterate over y */
         if (y0 > y1) {
-            SWAP(x0, x1);
-            SWAP(y0, y1);
+            SWAP16(x0, x1);
+            SWAP16(y0, y1);
         }
         for (y = y0; y < y1; y++) {
             image_draw_line_horizontal(image, x0, y, x1, colour, 1);

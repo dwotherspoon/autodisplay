@@ -1,20 +1,20 @@
 #include <string.h>
 
 #include <displays/display.h>
-#include <image/image.h>
+#include <image/image_formats.h>
 #include <debug.h>
 
 #ifdef TEST_BUILD
 #include <displays/display_sdl.h>
 #else
-#include <displays/display_gc9a01.h>
+#include <displays/display_gc9a01a.h>
 #endif
 
 struct display_type display_type_table[] = {
 #ifdef TEST_BUILD
     DISPLAY_TABLE_DEF("SDL", display_sdl),
 #else
-    DISPLAY_TABLE_DEF("GC9A01", display_gc9a01),
+    DISPLAY_TABLE_DEF("GC9A01A", display_gc9a01a),
 #endif
     DISPLAY_TABLE_END()
 };
@@ -59,8 +59,8 @@ void display_generate_background(struct display *display) {
     @param data An area of scratch memory, to use to render the display.
 */
 void display_render(struct display *display, uint8_t *data) {
-    ASSERT(display != NULL);
-    ASSERT(data != NULL);
+    ASSERT(display != NULL, "Display can not be NULL.");
+    ASSERT(data != NULL, "Data can not be NULL.");
     /* Note, we accept the display buffer as an argument,
        this allows sharing of the render buffer with all the displays.
        This reduces memory requirements. */
@@ -76,25 +76,25 @@ void display_render(struct display *display, uint8_t *data) {
                 0, 0, display->width, display->height);
     */
 
-    image_draw_line(&buffer, 120, 0, 120, 240, RGB_888_RED, 1);
+    image_draw_line(&buffer, 120, 0, 120, 240, IMAGE_RGB888_RED, 1);
 
-    image_draw_line(&buffer, 240, 120 , 0, 120, RGB_888_GREEN, 1);
+    image_draw_line(&buffer, 240, 120 , 0, 120, IMAGE_RGB888_GREEN, 1);
 
-    image_draw_line(&buffer, 0, 0 , 120, 120, RGB_888_BLUE, 1);
+    image_draw_line(&buffer, 0, 0 , 120, 120, IMAGE_RGB888_BLUE, 1);
 
-    image_draw_circle(&buffer, 120, 120, 30, RGB_888_BLUE, 1);
+    image_draw_circle(&buffer, 120, 120, 30, IMAGE_RGB888_BLUE, 1);
 
-    image_draw_circle(&buffer, 120, 120, 99, RGB_888_RED, 1);
+    image_draw_circle(&buffer, 120, 120, 99, IMAGE_RGB888_RED, 1);
 
-    image_draw_circle(&buffer, 120, 120, 120, RGB_888_GREEN, 1);
+    image_draw_circle(&buffer, 120, 120, 120, IMAGE_RGB888_GREEN, 1);
 
-    image_fill_circle(&buffer, 60, 60, 30, RGB_888(0, 128, 128));
+    image_fill_circle(&buffer, 60, 60, 30, IMAGE_RGB888(0, 128, 128));
 
-    image_fill_rectangle(&buffer, 200, 200, 235, 235, RGB_888(90, 90, 90));
+    image_fill_rectangle(&buffer, 200, 200, 235, 235, IMAGE_RGB888(90, 90, 90));
 
-    image_fill_rectangle(&buffer, 100, 100, 150, 170, RGB_888_GREEN);
+    image_draw_rectangle(&buffer, 100, 100, 150, 170, IMAGE_RGB888_GREEN, 1);
 
-    image_fill_rectangle(&buffer, 10, 15, 95, 70, RGB_888_RED);
+    image_fill_rectangle(&buffer, 10, 15, 95, 70, IMAGE_RGB888_RED);
 
     /* Send the completed display buffer to the display */
     display->type->write(display, &buffer);

@@ -14,10 +14,10 @@ LDFLAGS = -Os -Wl,--gc-sections,--relax $(SPECS) $(CPU_OPTIONS) -T$(MCU_LD)
 
 MAIN_EXECNAME = rom.hex
 TEST_EXECNAME = test
-TEST_SRCS = src/test.c src/displays/display.c src/displays/display_sdl.c src/image/image.c src/image/image_formats.c
+TEST_SRCS = src/test.c src/debug.c src/displays/display.c src/displays/display_sdl.c src/image/image.c src/image/image_formats.c
 TEST_CFLAGS = -Wall -Wextra -Wpedantic -O1 -Isrc/include
 
-DISPLAY_OBJS = src/displays/display.o
+DISPLAY_OBJS = src/displays/display.o src/displays/display_gc9a01a.o
 GAUGE_OBJS = src/gauges/gauge.o src/gauges/gauge_test.o src/gauges/gauge_dial.o
 INPUT_OBJS = src/inputs/input.o src/inputs/input_bme280.o
 IMAGE_OBJS = src/image/image.o src/image/image_formats.o
@@ -29,7 +29,7 @@ main: $(GAUGE_OBJS) $(DISPLAY_OBJS) $(INPUT_OBJS) $(IMAGE_OBJS)
 	$(CC) $(CFLAGS) src/main.c $(GAUGE_OBJS) -o $(TEST_EXECNAME)
 
 test:
-	$(TEST_CC) -DTEST_BUILD $(TEST_SRCS) $(TEST_CFLAGS) $(shell pkg-config --cflags --libs sdl2) -o $(TEST_EXECNAME)
+	$(TEST_CC) -DTEST_BUILD -DDEBUG_EN $(TEST_SRCS) $(TEST_CFLAGS) $(shell pkg-config --cflags --libs sdl2) -o $(TEST_EXECNAME)
 
 .PHONY: clean
 clean:

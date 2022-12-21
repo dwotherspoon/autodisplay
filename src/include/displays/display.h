@@ -24,10 +24,13 @@ union display_data {
 #endif
 };
 
+struct display;
+
 struct display_type {
     const char name[LIMIT_TYPE_NAME_LEN];
     void (*init)(struct display *display);
     void (*write)(struct display *display, struct image *buffer);
+    void (*set_backlight)(struct display *display, uint8_t value);
 };
 
 struct display {
@@ -59,14 +62,15 @@ struct display {
 #define DISPLAY_NO_BACKGROUND 0x0
 
 /* Size of buffer required for given size and bpp, rounded up */
-#define DISPLAY_DEF_BG_BUFFER(NAME, WIDTH, HEIGHT, BPP) uint8_t NAME##_bg_buffer_data[IMAGE_BUFFER_SIZE(WIDTH, HEIGHT, BPP)];
+#define DISPLAY_DEF_BG_BUFFER(NAME, WIDTH, HEIGHT, BPP) uint8_t NAME##_bg_buffer_data[IMAGE_BUFFER_SIZE(WIDTH, HEIGHT, BPP)]
 #define DISPLAY_DEF_STRUCT(NAME, TYPE_NAME, WIDTH, HEIGHT, IMAGE_FORMAT_NAME) {TYPE_NAME, NULL, {0}, WIDTH, HEIGHT, IMAGE_FORMAT_NAME, NULL, 0, 0,\
                                                         IMAGE_DEF_STRUCT(WIDTH, HEIGHT, IMAGE_FORMAT_NAME, NAME##_bg_buffer_data), DISPLAY_NO_BACKGROUND}
 
-#define DISPLAY_TABLE_DEF(NAME, PREFIX) {NAME, PREFIX##_init, PREFIX##_write}
-#define DISPLAY_TABLE_END()             {"", NULL, NULL}
+#define DISPLAY_TABLE_DEF(NAME, PREFIX) {NAME, PREFIX##_init, PREFIX##_write, PREFIX##_set_backlight}
+#define DISPLAY_TABLE_END()             {"", NULL, NULL, NULL}
 
 void display_init(struct display *display);
 void display_render(struct display *display, uint8_t *data);
+
 
 #endif

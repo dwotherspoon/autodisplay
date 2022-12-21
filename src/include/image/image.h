@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 #include <config.h>
-#include <image/image_formats.h>
 
 struct image {
     uint16_t width;
@@ -23,6 +22,10 @@ void image_draw_line(struct image *image,
 void image_draw_circle(struct image *image,
                         uint16_t centre_x, uint16_t centre_y,
                         uint16_t radius, uint32_t colour, uint8_t thickness);
+
+void image_draw_rectangle(struct image *image,
+                            uint16_t x0, uint16_t y0,
+                            uint16_t x1, uint16_t y1, uint32_t colour, uint8_t thickness);
 
 void image_fill_circle(struct image *image,
                         uint16_t centre_x, uint16_t centre_y,
