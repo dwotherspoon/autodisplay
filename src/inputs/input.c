@@ -15,7 +15,7 @@ struct input_type *input_find_type(char *name) {
 
     for (id = 0; input_type_table[id].name[0] != 0; id++) {
         if (strcmp(name, input_type_table[id].name) == 0) {
-            return input_type_table[id];
+            return &input_type_table[id];
         }
     }
 

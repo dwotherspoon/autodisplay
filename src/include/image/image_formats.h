@@ -35,6 +35,17 @@ struct image_format {
 #define IMAGE_RGB444_BLUE     IMAGE_RGB444(0, 0, 0xf)
 #define IMAGE_RGB444_BPP      (12)
 
+#define IMAGE_BGR444(R, G, B) ((B & 0xf) << 8 | (G & 0xf) << 4 | (R & 0xf))
+#define IMAGE_BGR444_R(V)     (V & 0xf)
+#define IMAGE_BGR444_G(V)     ((V >> 4) & 0xf)
+#define IMAGE_BGR444_B(V)     ((V >> 8) & 0xf)
+#define IMAGE_BGR444_BLACK    IMAGE_BGR444(0, 0, 0)
+#define IMAGE_BGR444_WHITE    IMAGE_BGR444(0xf, 0xf, 0xf)
+#define IMAGE_BGR444_RED      IMAGE_BGR444(0xf, 0, 0)
+#define IMAGE_BGR444_GREEN    IMAGE_BGR444(0, 0xf, 0)
+#define IMAGE_BGR444_BLUE     IMAGE_BGR444(0, 0, 0xf)
+#define IMAGE_BGR444_BPP      (12)
+
 #define IMAGE_RGB565(R, G, B) ((R & 0x1f) << 11 | (G & 0x3f) << 5 | (B & 0x1f))
 #define IMAGE_RGB565_R(V)     ((V >> 11) & 0x1f)
 #define IMAGE_RGB565_G(V)     ((V >> 5) & 0x3f)
