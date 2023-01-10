@@ -15,7 +15,7 @@ uint32_t image_rgb888_to_luminance(uint32_t value) {
        255L = 76R + 150G + 29B 
        Result in range 0 - 255
        Coefficents from OpenCV RGB2Gray */
-    return (76*IMAGE_RGB888_R(value) + 150*IMAGE_RGB888_G(value) + 29*IMAGE_RGB888_B(value))/255;
+    return (76 * IMAGE_RGB888_R(value) + 150 * IMAGE_RGB888_G(value) + 29 * IMAGE_RGB888_B(value)) / 255;
 }
 
 /* MONO 1 */

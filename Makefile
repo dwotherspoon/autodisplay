@@ -1,5 +1,5 @@
 MCU = IMXRT1062
-MCU_LD = imxrt1062_t41.ld
+MCU_LD = src/boards/imxrt1062_t41.ld
 MCU_DEF = ARDUINO_TEENSY41
 
 OPTIONS =  -D__$(MCU)__
